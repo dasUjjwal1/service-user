@@ -16,12 +16,13 @@ public class AgentModel {
     @NotNull
     @NotBlank
     private String name;
-    @NotNull
-    @NotBlank
+
     private AgentType agentType;
+
     @NotNull
     @NotBlank
     private String mobileNumber;
+
     @NotNull
     @NotBlank
     private String password;

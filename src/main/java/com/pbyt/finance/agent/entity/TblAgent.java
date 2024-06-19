@@ -127,13 +127,13 @@ public class TblAgent {
     @Column(name = "score")
     private Integer score;
 
-    @Column(name = "created_on")
+    @Column(name = "created_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;
 
     @Column(name = "created_by")
     private BigInteger createdBy;
 
-    @Column(name = "modified_on")
+    @Column(name = "modified_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime modifiedOn;
 
     @Column(name = "modified_by")

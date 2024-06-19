@@ -34,8 +34,10 @@ public class TblUser {
     private BigInteger provinceId;
     private BigInteger zipCode;
     private BigInteger createdBy;
+    @Column(name = "created_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;
     private BigInteger modifiedBy;
+    @Column(name = "modified_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime modifiedOn;
     @Column(columnDefinition = "boolean default false")
     private Boolean isSuperAdmin;

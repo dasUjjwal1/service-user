@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface AgentRepository extends JpaRepository<TblAgent, BigInteger> {
     @Query("SELECT EXISTS(SELECT ta.mobileNumber from TblAgent ta WHERE mobileNumber = :mobileNumber)")
     Boolean findAgentByMobile(String mobileNumber);
-    @Query("SELECT ta.mobileNumber from TblAgent ta WHERE mobileNumber = :mobileNumber")
-    Optional<TblAgent> findAgent(String mobileNumber);
+    @Query("SELECT ta from TblAgent ta WHERE id = :id")
+    TblAgent findAgent(BigInteger id);
 }
