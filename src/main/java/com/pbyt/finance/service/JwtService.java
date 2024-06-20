@@ -5,6 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -58,4 +61,19 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, id,aud);
     }
+
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//
+//        String authHeader = request.getHeader("Authorization");
+//        String token = null;
+//        String username = null;
+//        if(authHeader != null && authHeader.startsWith("Bearer ")){
+//            token = authHeader.substring(7);
+//            username = jwtService.extractUsername(token);
+//        }
+//
+//
+//
+//        filterChain.doFilter(request, response);
+//    }
 }
