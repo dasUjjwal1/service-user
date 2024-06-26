@@ -33,6 +33,6 @@ public class FilterConfig extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return !path.matches("/api/v1/auth/*");
+        return !path.matches("/api/v1/auth/*") && !path.matches("/swagger-ui/*");
     }
 }
