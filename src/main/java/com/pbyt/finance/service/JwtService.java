@@ -3,7 +3,6 @@ package com.pbyt.finance.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +14,9 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-    private static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    private static final String SECRET = "faqAqZcxL26aNfhfaym0EnmAWwxLDtMl/VclGa+qW6jS3/GEurfXj1z6SRrcFdf6";
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes = SECRET.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
     private Claims extractAllClaims(String token) {
@@ -51,7 +50,7 @@ public class JwtService {
                 .setSubject(id)
                 .setAudience(aud)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60))
+                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 600))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
     public String GenerateToken(String id,String aud){
