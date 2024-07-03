@@ -7,5 +7,4 @@ import java.math.BigInteger;
 
 public interface LeadService {
     MessageResponse createLead(LeadCreateModel leadCreateModel, BigInteger createdBy) throws Exception;
-//    void allocateLead()
 }

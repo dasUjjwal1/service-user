@@ -5,6 +5,8 @@ import com.pbyt.finance.lead.enums.LeadStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
