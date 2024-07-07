@@ -1,5 +1,9 @@
 package com.pbyt.finance.user.entity;
 
+import com.pbyt.finance.entity.Address;
+import com.pbyt.finance.entity.WorkArea;
+import com.pbyt.finance.util.AddressConverter;
+import com.pbyt.finance.util.WorkAreaConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,35 +13,35 @@ import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_user", schema = "cdm")
+@Table(name = "tbl_user",indexes = @Index(name = "user_idx", columnList = "id"))
 public class TblUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BIGINT")
-    private BigInteger id;
-    private String userName;
+    private Integer id;
     private String password;
     private String name;
-    private String mobileNumber;
-
-    private BigInteger agentId;
+    @Column(unique = true,columnDefinition = "BIGINT USING mobile_number::BIGINT")
+    private Long mobileNumber;
     private Date dob;
     private String email;
-    private String address;
-    private BigInteger barangayId;
-    private BigInteger municipalityId;
-    private BigInteger provinceId;
-    private BigInteger zipCode;
-    private BigInteger createdBy;
-    @Column(name = "created_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
+    @Convert(converter = AddressConverter.class)
+    @Column(name = "address", length = 500)
+    private Address address;
+
+    @Convert(converter = WorkAreaConverter.class)
+    @Column(name = "work_area", length = 500)
+    private WorkArea workingArea;
+    private Integer createdBy;
+    @Column(name = "created_on", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;
-    private BigInteger modifiedBy;
-    @Column(name = "modified_on",columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
+    private Integer modifiedBy;
+    @Column(name = "modified_on", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime modifiedOn;
     @Column(columnDefinition = "boolean default false")
     private Boolean isSuperAdmin;

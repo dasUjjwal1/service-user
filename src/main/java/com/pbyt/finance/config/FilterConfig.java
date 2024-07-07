@@ -28,7 +28,8 @@ public class FilterConfig extends OncePerRequestFilter {
                     request.setAttribute("userId", userId);
                     filterChain.doFilter(request, response);
                 } else {
-                    response.sendError(400, "Invalid Request");
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("Unauthorised");
                 }
             } else {
                 filterChain.doFilter(request, response);
