@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -19,14 +18,14 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_user",indexes = @Index(name = "user_idx", columnList = "id"))
+@Table(name = "tbl_user")
 public class TblUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String password;
     private String name;
-    @Column(unique = true,columnDefinition = "BIGINT USING mobile_number::BIGINT")
+    @Column(unique = true)
     private Long mobileNumber;
     private Date dob;
     private String email;

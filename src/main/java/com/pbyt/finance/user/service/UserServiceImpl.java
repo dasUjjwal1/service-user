@@ -4,6 +4,8 @@ import com.pbyt.finance.repository.UserRepository;
 import com.pbyt.finance.user.entity.TblUser;
 import com.pbyt.finance.user.model.UserCreateModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +41,11 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Page<TblUser> findAllUser(int pageNo, int pageSize) {
+        PageRequest pr = PageRequest.of(pageNo, pageSize);
+        return userRepository.findAll(pr);
     }
 }
