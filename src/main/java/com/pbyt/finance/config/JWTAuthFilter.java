@@ -33,12 +33,13 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             if (authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
                 String data = jwtService.extractAud(token);
+                String id = jwtService.extractId(token);
                 Collection<? extends GrantedAuthority> authorities =
                         objectMapper.readValue(data, Collection.class);
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     if (!jwtService.isTokenExpired(token)) {
                         UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(null, null, authorities);
+                                new UsernamePasswordAuthenticationToken(id, null, authorities);
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     }
                 }
