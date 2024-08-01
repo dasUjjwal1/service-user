@@ -15,16 +15,16 @@ public class FinanceApplication {
         SpringApplication.run(FinanceApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(UserRepository userRepository) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return args -> {
-            TblUser admin = TblUser.builder()
-                    .mobileNumber(9647012776L)
-                    .password(encoder.encode("password"))
-                    .isSuperAdmin(true)
-                    .build();
-            userRepository.save(admin);
-        };
-    }
+//    @Bean
+//    CommandLineRunner run(UserRepository userRepository) {
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        return args -> {
+//            TblUser admin = TblUser.builder()
+//                    .mobileNumber(9647012776L)
+//                    .password(encoder.encode("password"))
+//                    .isSuperAdmin(true)
+//                    .build();
+//            userRepository.save(admin);
+//        };
+//    }
 }

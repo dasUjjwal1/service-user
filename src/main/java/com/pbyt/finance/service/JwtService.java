@@ -19,7 +19,7 @@ public class JwtService {
         byte[] keyBytes = SECRET.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignKey())
@@ -40,11 +40,10 @@ public class JwtService {
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
     private String createToken(Map<String, Object> claims, String id, String aud) {
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(id)

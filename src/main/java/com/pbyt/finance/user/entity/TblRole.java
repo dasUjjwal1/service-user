@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_role",indexes = @Index(name = "user_role_idx", columnList = "mobile_number"))
+@Table(name = "tbl_role")
 public class TblRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -5,6 +5,7 @@ import com.pbyt.finance.global.model.MessageResponse;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,6 +42,14 @@ public class ApplicationExceptionHandler implements ErrorController {
         return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
     }
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<MessageResponse> authHandler(Exception invalidCredential) {
+        return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
+    }
+    @ExceptionHandler(TokenNull.class)
+    public ResponseEntity<MessageResponse> tokenNull(Exception invalidCredential) {
+        return createHttpResponse(HttpStatus.FORBIDDEN, invalidCredential.getMessage());
+    }
     public ResponseEntity<MessageResponse> createHttpResponse(HttpStatus status, String message) {
         MessageResponse response = MessageResponse.builder()
                 .message(message)

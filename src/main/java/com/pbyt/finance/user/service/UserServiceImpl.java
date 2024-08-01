@@ -6,11 +6,15 @@ import com.pbyt.finance.user.model.UserCreateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -18,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserCreateModel userCreateModel) {
         try {
-            String hashedPassword = new BCryptPasswordEncoder().encode(userCreateModel.getPassword());
+            String hashedPassword = "";
             userRepository.save(TblUser.builder()
                     .name(userCreateModel.getName())
                     .email(userCreateModel.getEmail())
@@ -47,5 +51,12 @@ public class UserServiceImpl implements UserService {
     public Page<TblUser> findAllUser(int pageNo, int pageSize) {
         PageRequest pr = PageRequest.of(pageNo, pageSize);
         return userRepository.findAll(pr);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String mobileNumber) {
+        Optional<TblUser> user = userRepository.findUserByMobileNumber(Long.parseLong(mobileNumber));
+        if (user.isPresent()) return user.get();
+        else throw new UsernameNotFoundException("User not found");
     }
 }
