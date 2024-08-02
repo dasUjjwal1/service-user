@@ -6,15 +6,10 @@ import com.pbyt.finance.user.model.UserCreateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -53,10 +48,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll(pr);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String mobileNumber) {
-        Optional<TblUser> user = userRepository.findUserByMobileNumber(Long.parseLong(mobileNumber));
-        if (user.isPresent()) return user.get();
-        else throw new UsernameNotFoundException("User not found");
-    }
 }
