@@ -1,5 +1,6 @@
 package com.pbyt.finance.config;
 
+import com.pbyt.finance.exception.AccessDeniedHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ public class SecurityConfig {
                     request.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());;
         http.exceptionHandling( exception -> exception
+                .accessDeniedHandler(new AccessDeniedHandlerImpl())
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint));
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

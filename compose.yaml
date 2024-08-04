@@ -8,14 +8,14 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  server:
-    build:
-      context: .
-    ports:
-      - 8083:8083
-    depends_on:
-      db:
-        condition: service_healthy
+#  server:
+#    build:
+#      context: .
+#    ports:
+#      - 8083:8083
+#    depends_on:
+#      db:
+#        condition: service_healthy
 
   db:
     image: postgres
