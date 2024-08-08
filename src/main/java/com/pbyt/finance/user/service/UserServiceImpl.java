@@ -6,6 +6,7 @@ import com.pbyt.finance.user.model.UserCreateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserCreateModel userCreateModel) {
         try {
-            String hashedPassword = "";
+
+            String hashedPassword = new BCryptPasswordEncoder().encode(userCreateModel.getPassword());
             userRepository.save(TblUser.builder()
                     .name(userCreateModel.getName())
                     .email(userCreateModel.getEmail())
