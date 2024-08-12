@@ -27,12 +27,13 @@ public class SecurityConfig {
          http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request)-> {
                     request.requestMatchers( "/swagger-ui/**","/v3/api-docs/**","/api/v1/auth/**").permitAll();
-                    request.requestMatchers("/api/v1/app/user/**").hasAuthority("ROLE_ADMIN");
+                    request.requestMatchers("/api/v1/app/user/**").hasAuthority("ROLE_SADMIN");
                     request.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());;
         http.exceptionHandling( exception -> exception
                 .accessDeniedHandler(new AccessDeniedHandlerImpl())
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        );
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
