@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService{
     public LoginResponse login(LoginModel loginModel,TblUser user) throws InvalidCredential {
         boolean isCredentialCorrect = new BCryptPasswordEncoder().matches(loginModel.getPassword(),user.getPassword());
         if (!isCredentialCorrect) throw new InvalidCredential("Invalid Credential");
-        String token = jwtService.GenerateToken(user.getId().toString(), user.getMobileNumber().toString());
+        String token = jwtService.GenerateToken(user.getAuthorities()+"-"+user.getId().toString(), user.getMobileNumber().toString());
         ModelMapper modelMapper = new ModelMapper();
         LoginResponse response = modelMapper.map(user,LoginResponse.class);
         response.setToken(token);

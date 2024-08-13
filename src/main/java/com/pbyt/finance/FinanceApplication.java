@@ -22,8 +22,8 @@ public class FinanceApplication {
 //    @Bean
 //    CommandLineRunner run(UserRepository userRepository) {
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        Collection<RoleEnum> authorities = HashSet.newHashSet(1);
-//        authorities.add(RoleEnum.ADMIN);
+//        Collection<Integer> authorities = HashSet.newHashSet(1);
+//        authorities.add(RoleEnum.ADMIN.ordinal());
 //        return args -> {
 //            TblUser admin = TblUser.builder()
 //                    .mobileNumber(9647012776L)

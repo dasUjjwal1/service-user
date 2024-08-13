@@ -27,9 +27,9 @@ public class SecurityConfig {
          http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request)-> {
                     request.requestMatchers( "/swagger-ui/**","/v3/api-docs/**","/api/v1/auth/**").permitAll();
-                    request.requestMatchers("/api/v1/app/user/**").hasAuthority("ROLE_SADMIN");
+                    request.requestMatchers("/api/v1/app/user/**").hasRole("ZM");
                     request.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults());;
+                }).httpBasic(Customizer.withDefaults());
         http.exceptionHandling( exception -> exception
                 .accessDeniedHandler(new AccessDeniedHandlerImpl())
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)

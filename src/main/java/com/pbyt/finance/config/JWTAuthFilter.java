@@ -1,6 +1,7 @@
 package com.pbyt.finance.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.exception.TokenNull;
 import com.pbyt.finance.service.JwtService;
 import com.pbyt.finance.util.AuthoritiesConverter;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -41,11 +44,28 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     String token = authHeader.substring(7);
                     String data = jwtService.extractAud(token);
                     String id = jwtService.extractId(token);
-                    Collection<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    String roleList = id.split("-")[0];
+                    ObjectMapper mapper = new ObjectMapper();
+                    Collection<GrantedAuthority> authorities = mapper.readValue(roleList, Collection.class)
+                            .stream()
+                            .map(it -> {
+
+                                String role = switch (it.toString()) {
+                                    case "0" -> RoleEnum.ADMIN.name();
+                                    case "1" -> RoleEnum.ZM.name();
+                                    case "2" -> RoleEnum.RSM.name();
+                                    case "3" -> RoleEnum.RM.name();
+                                    default -> throw new IllegalStateException("Unexpected value: " + it.toString());
+                                };
+                                return new SimpleGrantedAuthority("ROLE_"+role);
+                            })
+                            .toList();
+                    log.info("Role--{}",authorities);
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         if (!jwtService.isTokenExpired(token)) {
                             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, null, authorities);
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
                         }
                     }
 
@@ -54,7 +74,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN,e.getMessage());
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
     }
 }

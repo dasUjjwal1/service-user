@@ -37,7 +37,7 @@ public class TblUser {
     private Address address;
     @Convert(converter = AuthoritiesConverter.class)
     @Column(name = "authorities", length = 500)
-    private Collection<RoleEnum> authorities;
+    private Collection<Integer> authorities;
     @Convert(converter = WorkAreaConverter.class)
     @Column(name = "work_area", length = 500)
     private WorkArea workingArea;
