@@ -22,10 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -38,6 +35,16 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            if (!parameterMap.isEmpty()){
+                for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+                    String paramValues = entry.getValue()[0];
+                    if (!paramValues.matches("^[a-zA-Z0-9:/.-]+$")){
+                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN,"Invalid query");
+                    }
+                }
+            }
             String authHeader = request.getHeader("Authorization");
             if (authHeader != null) {
                 if (authHeader.startsWith("Bearer ")) {
@@ -49,7 +56,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     Collection<GrantedAuthority> authorities = mapper.readValue(roleList, Collection.class)
                             .stream()
                             .map(it -> {
-
                                 String role = switch (it.toString()) {
                                     case "0" -> RoleEnum.ADMIN.name();
                                     case "1" -> RoleEnum.ZM.name();

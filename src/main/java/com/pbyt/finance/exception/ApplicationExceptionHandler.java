@@ -43,19 +43,27 @@ public class ApplicationExceptionHandler implements ErrorController {
         return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
     }
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<MessageResponse> runtimeHandler(Exception invalidCredential) {
+    public ResponseEntity<MessageResponse> runtimeHandler(RuntimeException invalidCredential) {
         return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
     }
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<MessageResponse> authHandler(Exception invalidCredential) {
+    public ResponseEntity<MessageResponse> authHandler(UsernameNotFoundException invalidCredential) {
         return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
     }
     @ExceptionHandler(TokenNull.class)
-    public ResponseEntity<MessageResponse> tokenNull(Exception invalidCredential) {
+    public ResponseEntity<MessageResponse> tokenNull(TokenNull invalidCredential) {
         return createHttpResponse(HttpStatus.FORBIDDEN, invalidCredential.getMessage());
     }
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<MessageResponse> handleAccessDeniedException(AccessDeniedException e) {
+        return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<MessageResponse> handleIllegalException(AccessDeniedException e) {
+//        return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
+//    }
+    @ExceptionHandler(BadRequestHandler.class)
+    public ResponseEntity<MessageResponse> handleIllegalException(BadRequestHandler e) {
         return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
     }
     public ResponseEntity<MessageResponse> createHttpResponse(HttpStatus status, String message) {
