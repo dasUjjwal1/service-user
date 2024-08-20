@@ -11,10 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,7 +26,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_user")
-public class TblUser {
+public class TblUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -49,4 +53,30 @@ public class TblUser {
     private LocalDateTime modifiedOn;
     @Column(columnDefinition = "boolean default false")
     private Boolean isSuperAdmin;
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities
+                .stream()
+                .map(it -> {
+                    String role = switch (it.toString()) {
+                        case "0" -> RoleEnum.ADMIN.name();
+                        case "1" -> RoleEnum.ZM.name();
+                        case "2" -> RoleEnum.RSM.name();
+                        case "3" -> RoleEnum.RM.name();
+                        default -> RoleEnum.USER.name();
+                    };
+                    return new SimpleGrantedAuthority("ROLE_"+role);
+                })
+                .toList();
+    }
+    @Override
+    public String getUsername() {
+        return mobileNumber.toString();
+    }
+
 }

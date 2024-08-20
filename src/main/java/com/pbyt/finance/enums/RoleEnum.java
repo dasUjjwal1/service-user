@@ -4,5 +4,6 @@ public enum RoleEnum {
     ADMIN,
     ZM,
     RSM,
-    RM
+    RM,
+    USER
 }

@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +34,15 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        if (request.getServletPath().contains("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         try {
             Map<String, String[]> parameterMap = request.getParameterMap();
             if (!parameterMap.isEmpty()){
@@ -53,20 +62,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     String id = jwtService.extractId(token);
                     String roleList = id.split("-")[0];
                     ObjectMapper mapper = new ObjectMapper();
-                    Collection<GrantedAuthority> authorities = mapper.readValue(roleList, Collection.class)
-                            .stream()
-                            .map(it -> {
-                                String role = switch (it.toString()) {
-                                    case "0" -> RoleEnum.ADMIN.name();
-                                    case "1" -> RoleEnum.ZM.name();
-                                    case "2" -> RoleEnum.RSM.name();
-                                    case "3" -> RoleEnum.RM.name();
-                                    default -> throw new IllegalStateException("Unexpected value: " + it.toString());
-                                };
-                                return new SimpleGrantedAuthority("ROLE_"+role);
-                            })
-                            .toList();
-                    log.info("Role--{}",authorities);
+                    Collection<GrantedAuthority> authorities = mapper.readValue(roleList, Collection.class);
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         if (!jwtService.isTokenExpired(token)) {
                             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, null, authorities);
