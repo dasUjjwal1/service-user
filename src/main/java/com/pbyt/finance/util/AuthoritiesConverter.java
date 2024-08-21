@@ -6,10 +6,10 @@ import jakarta.persistence.AttributeConverter;
 
 import java.util.Collection;
 
-public class AuthoritiesConverter implements AttributeConverter<Collection<String>,String> {
+public class AuthoritiesConverter implements AttributeConverter<Collection<Integer>,String> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Override
-    public String convertToDatabaseColumn(Collection<String> workArea) {
+    public String convertToDatabaseColumn(Collection<Integer> workArea) {
         try {
             return objectMapper.writeValueAsString(workArea);
         } catch (JsonProcessingException jpe) {
@@ -18,7 +18,7 @@ public class AuthoritiesConverter implements AttributeConverter<Collection<Strin
     }
 
     @Override
-    public Collection<String> convertToEntityAttribute(String s) {
+    public Collection<Integer> convertToEntityAttribute(String s) {
         try {
             return objectMapper.readValue(s, Collection.class);
         } catch (JsonProcessingException e) {

@@ -39,8 +39,8 @@ public class ApplicationExceptionHandler implements ErrorController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<MessageResponse> genericHandler(Exception invalidCredential) {
-        return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());
+    public ResponseEntity<MessageResponse> genericHandler(Exception ex) {
+        return createHttpResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<MessageResponse> runtimeHandler(RuntimeException invalidCredential) {

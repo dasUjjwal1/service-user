@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -58,22 +57,25 @@ public class TblUser implements UserDetails {
     public String getPassword() {
         return password;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities
-                .stream()
-                .map(it -> {
-                    String role = switch (it.toString()) {
-                        case "0" -> RoleEnum.ADMIN.name();
-                        case "1" -> RoleEnum.ZM.name();
-                        case "2" -> RoleEnum.RSM.name();
-                        case "3" -> RoleEnum.RM.name();
-                        default -> RoleEnum.USER.name();
-                    };
-                    return new SimpleGrantedAuthority("ROLE_"+role);
-                })
-                .toList();
+        return authorities.stream().map(it -> {
+            String role = switch (it) {
+                case 0 -> RoleEnum.ADMIN.name();
+                case 1 -> RoleEnum.ZM.name();
+                case 2 -> RoleEnum.RSM.name();
+                case 3 -> RoleEnum.RM.name();
+                default -> RoleEnum.USER.name();
+            };
+            return new SimpleGrantedAuthority("ROLE_" + role);
+        }).toList();
     }
+
+    public Collection<Integer> getRoles(){
+        return authorities;
+    }
+
     @Override
     public String getUsername() {
         return mobileNumber.toString();

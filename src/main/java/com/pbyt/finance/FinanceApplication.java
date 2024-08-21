@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
@@ -22,7 +23,7 @@ public class FinanceApplication {
 //    @Bean
 //    CommandLineRunner run(UserRepository userRepository) {
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        Collection<Integer> authorities = HashSet.newHashSet(1);
+//        Collection<Integer> authorities = new HashSet<>();
 //        authorities.add(RoleEnum.ADMIN.ordinal());
 //        return args -> {
 //            TblUser admin = TblUser.builder()
