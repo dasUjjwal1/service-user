@@ -9,5 +9,5 @@ import org.springframework.http.HttpStatus;
 public class MessageResponse {
     private HttpStatus status;
     private String message;
-    private Object object;
+    private Object data;
 }

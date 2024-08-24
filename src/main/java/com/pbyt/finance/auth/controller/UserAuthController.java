@@ -33,7 +33,7 @@ public class UserAuthController {
         return ResponseEntity.ok(MessageResponse.builder()
                 .message("Login Successfully")
                 .status(HttpStatus.OK)
-                .object(response)
+                .data(response)
                 .build());
     }
 }

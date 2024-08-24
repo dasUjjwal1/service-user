@@ -58,10 +58,10 @@ public class ApplicationExceptionHandler implements ErrorController {
     public ResponseEntity<MessageResponse> handleAccessDeniedException(AccessDeniedException e) {
         return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
     }
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    public ResponseEntity<MessageResponse> handleIllegalException(AccessDeniedException e) {
-//        return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
-//    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<MessageResponse> handleIllegalException(AccessDeniedException e) {
+        return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());
+    }
     @ExceptionHandler(BadRequestHandler.class)
     public ResponseEntity<MessageResponse> handleIllegalException(BadRequestHandler e) {
         return createHttpResponse(HttpStatus.FORBIDDEN, e.getMessage());

@@ -43,7 +43,7 @@ public class UserController {
                    .builder()
                    .status(HttpStatus.OK)
                    .message("Successfully")
-                   .object(data)
+                   .data(data)
                    .build());
     }
 }

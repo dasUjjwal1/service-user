@@ -1,5 +1,7 @@
 package com.pbyt.finance.exception;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pbyt.finance.global.model.MessageResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,9 +11,11 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
-    private String errorPage;
 
     @Override
     public void handle(
@@ -22,18 +26,16 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
         if (response.isCommitted()) {
             return;
         }
-        if (this.errorPage == null) {
-            response.sendError(
-                    HttpStatus.FORBIDDEN.value(),
-                    HttpStatus.FORBIDDEN.getReasonPhrase());
-            return;
-        }
-        // Put exception into request scope (perhaps of use to a view)
-        request.setAttribute(WebAttributes.ACCESS_DENIED_403, accessDeniedException);
-        // Set the 403 status code.
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-        // forward to error page.
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(APPLICATION_JSON_VALUE);
+        MessageResponse messageResponse = MessageResponse.builder()
+                .message(accessDeniedException.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+        OutputStream out = response.getOutputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(out, messageResponse);
+        out.flush();
 
-        request.getRequestDispatcher(this.errorPage).forward(request, response);
     }
 }
