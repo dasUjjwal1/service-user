@@ -3,9 +3,6 @@ package com.pbyt.finance.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.service.JwtService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -45,7 +42,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     if (!jwtService.isTokenExpired(token)) {
                         String data = jwtService.extractAud(token);
                         String id = jwtService.extractId(token);
-                        String roleList = id.split("-")[0];
+                        List<String> payload = List.of(id.split("-"));
+                        String roleList = payload.get(0);
+                        String userId = payload.get(1);
                         if (SecurityContextHolder.getContext().getAuthentication() == null) {
                             Collection<Integer> authorities = objectMapper.readValue(roleList, Collection.class);
                             Collection<SimpleGrantedAuthority> roles = authorities
@@ -63,13 +62,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                                     .toList();
                             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, null, roles);
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                            request.setAttribute("data",data);
+                            request.setAttribute("id",userId);
                         }
                     }
                 }
             }
 
-        } catch (ExpiredJwtException | BadCredentialsException | UnsupportedJwtException |
-                 MalformedJwtException jwtException) {
+        } catch (Exception jwtException) {
             request.setAttribute("exception", jwtException);
         }
         filterChain.doFilter(request, response);

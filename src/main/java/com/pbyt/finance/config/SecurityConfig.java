@@ -1,5 +1,6 @@
 package com.pbyt.finance.config;
 
+import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.exception.AccessDeniedHandlerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -41,9 +41,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> {
                     request.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/**").permitAll();
-                    request.requestMatchers("/api/v1/app/user/**").hasAnyRole(
-                            "ADMIN", "ZM"
-                    );
+                    request.requestMatchers("/api/v1/app/user/**").hasRole(RoleEnum.ADMIN.name());
                     request.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());
         http.exceptionHandling(exception -> exception

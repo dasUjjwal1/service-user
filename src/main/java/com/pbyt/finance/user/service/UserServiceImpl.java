@@ -3,15 +3,15 @@ package com.pbyt.finance.user.service;
 import com.pbyt.finance.repository.UserRepository;
 import com.pbyt.finance.user.entity.TblUser;
 import com.pbyt.finance.user.model.UserCreateModel;
+import com.pbyt.finance.user.model.UserResponseDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .email(userCreateModel.getEmail())
                     .mobileNumber(userCreateModel.getMobileNumber())
                     .address(userCreateModel.getAddress())
+                    .authorities(List.of(1))
                     .password(hashedPassword)
                     .workingArea(userCreateModel.getWorkingArea())
                     .dob(userCreateModel.getDob())
@@ -50,9 +51,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<TblUser> findAllUser(int pageNo, int pageSize) {
-        PageRequest pr = PageRequest.of(pageNo, pageSize);
-        return userRepository.findAll(pr);
+    public List<UserResponseDetails> findAllUser(int pageNo, int pageSize) {
+        return userRepository.findAllUsers();
     }
 
     @Override
