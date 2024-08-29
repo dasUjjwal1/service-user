@@ -5,7 +5,6 @@ import com.pbyt.finance.global.model.MessageResponse;
 import com.pbyt.finance.user.model.UserCreateModel;
 import com.pbyt.finance.user.model.UserResponseDetails;
 import com.pbyt.finance.user.service.UserService;
-import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +21,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RolesAllowed({"ROLE_ADMIN"})
+//    @RolesAllowed({"ADMIN"})
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody @Validated UserCreateModel userCreateModel) throws AlreadyPresent {
+
         boolean isAlreadyPresent = userService.isUserExists(userCreateModel.getMobileNumber());
         if (isAlreadyPresent) throw new AlreadyPresent("User Already Present");
+//        List<Integer> roleIndexList = userCreateModel.getAuthorities();
         userService.createUser(userCreateModel);
         return ResponseEntity.ok(MessageResponse
                 .builder()

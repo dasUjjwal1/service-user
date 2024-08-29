@@ -2,9 +2,11 @@ package com.pbyt.finance.user.model;
 
 import com.pbyt.finance.entity.Address;
 import com.pbyt.finance.entity.WorkArea;
+import com.pbyt.finance.enums.RoleEnum;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.Date;
 @Data
 public class UserCreateModel {
@@ -28,4 +30,7 @@ public class UserCreateModel {
     private Address address;
     @NotNull
     private WorkArea workingArea;
+    @NotNull
+    @NotEmpty(message = "Input authorities list cannot be empty.")
+    private Collection<RoleEnum> authorities;
 }
