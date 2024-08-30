@@ -5,5 +5,7 @@ public enum RoleEnum {
     ZM,
     RSM,
     RM,
+
+    AGENT,
     USER
 }
