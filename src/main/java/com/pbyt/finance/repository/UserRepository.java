@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<TblUser, Integer> , PagingAndSortingRepository<TblUser,Integer> {
+public interface UserRepository extends JpaRepository<TblUser, Integer>  {
     @Query("SELECT ta from TblUser ta WHERE mobileNumber = :mobileNumber")
     Optional<TblUser> findUserByMobileNumber(Long mobileNumber);
 

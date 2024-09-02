@@ -1,11 +1,10 @@
 package com.pbyt.finance.user.model;
 
 import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.WorkArea;
+import com.pbyt.finance.entity.TblWorkArea;
 import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
-import com.pbyt.finance.util.WorkAreaConverter;
 import jakarta.persistence.Convert;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +27,7 @@ public class UserResponseDetails {
     private Address address;
     @Convert(converter = AuthoritiesConverter.class)
     private Collection<Integer> authorities;
-    @Convert(converter = WorkAreaConverter.class)
-    private WorkArea workingArea;
+    private TblWorkArea workingArea;
     private Integer createdBy;
     private LocalDateTime createdOn;
     public Collection<String> getAuthorities() {

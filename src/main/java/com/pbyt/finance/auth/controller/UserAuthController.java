@@ -1,8 +1,8 @@
 package com.pbyt.finance.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pbyt.finance.auth.model.LoginModel;
-import com.pbyt.finance.auth.model.LoginResponse;
+import com.pbyt.finance.auth.model.UserLoginModel;
+import com.pbyt.finance.auth.model.UserLoginResponse;
 import com.pbyt.finance.auth.service.AuthService;
 import com.pbyt.finance.exception.InvalidCredential;
 import com.pbyt.finance.exception.NotFound;
@@ -26,10 +26,10 @@ public class UserAuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    private ResponseEntity<?> loginUser(@RequestBody @Validated LoginModel loginModel) throws NotFound, InvalidCredential, JsonProcessingException {
-        Optional<TblUser> user = authService.checkRegister(loginModel.getMobileNumber());
+    private ResponseEntity<?> loginUser(@RequestBody @Validated UserLoginModel userLoginModel) throws NotFound, InvalidCredential, JsonProcessingException {
+        Optional<TblUser> user = authService.checkRegister(userLoginModel.getMobileNumber());
         if (user.isEmpty()) throw new NotFound("User Not Found");
-        LoginResponse response = authService.login(loginModel, user.get());
+        UserLoginResponse response = authService.login(userLoginModel, user.get());
         return ResponseEntity.ok(MessageResponse.builder()
                 .message("Login Successfully")
                 .status(HttpStatus.OK)

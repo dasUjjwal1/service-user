@@ -1,11 +1,10 @@
 package com.pbyt.finance.user.entity;
 
 import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.WorkArea;
+import com.pbyt.finance.entity.TblWorkArea;
 import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
-import com.pbyt.finance.util.WorkAreaConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,9 +42,17 @@ public class TblUser implements UserDetails {
     @Convert(converter = AuthoritiesConverter.class)
     @Column(name = "authorities", length = 500)
     private Collection<Integer> authorities;
-    @Convert(converter = WorkAreaConverter.class)
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "user_work",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "work_area_id")})
     @Column(name = "work_area", length = 500)
-    private WorkArea workingArea;
+    private Set<TblWorkArea> workingArea = HashSet.newHashSet(0);
     private Integer createdBy;
     @Column(name = "created_on", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;
@@ -72,7 +81,7 @@ public class TblUser implements UserDetails {
         }).toList();
     }
 
-    public Collection<Integer> getRoles(){
+    public Collection<Integer> getRoles() {
         return authorities;
     }
 

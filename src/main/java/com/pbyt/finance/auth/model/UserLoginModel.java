@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class LoginModel {
+public class UserLoginModel {
     @NotNull
     @Min(value = 1)
     private Long mobileNumber;

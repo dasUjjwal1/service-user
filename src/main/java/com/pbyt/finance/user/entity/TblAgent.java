@@ -1,12 +1,10 @@
 package com.pbyt.finance.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.WorkArea;
+import com.pbyt.finance.entity.TblWorkArea;
 import com.pbyt.finance.global.enums.Gender;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
-import com.pbyt.finance.util.WorkAreaConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @Entity
@@ -36,16 +35,16 @@ public class TblAgent {
 
     @Column(unique = true)
     private Long mobileNumber;
-
+    private Date dob;
+    private String password;
     @Convert(converter = AddressConverter.class)
     @Column(name = "address", length = 500)
     private Address address;
     @Convert(converter = AuthoritiesConverter.class)
     @Column(name = "authorities", length = 500)
     private Collection<Integer> authorities;
-    @Convert(converter = WorkAreaConverter.class)
-    @Column(name = "work_area", length = 500)
-    private WorkArea workingArea;
+//    @Column(name = "work_area", length = 500)
+//    private TblWorkArea workingArea;
 
     private String status;
 
@@ -67,7 +66,7 @@ public class TblAgent {
 
     private Integer updatedBy;
 
-    private String whatsappNumber;
+    private Long whatsappNumber;
 
 //    private Integer parentAgentId;
 
@@ -93,20 +92,20 @@ public class TblAgent {
 
     private String deviceToken;
 
-    @Transient
-    @JsonInclude
-    private String jwtToken;
-    @Transient
-    @JsonInclude
-    private String BMCode;
-    @Transient
-    @JsonInclude
-    private String DSACompanyCode;
-    @Transient
-    @JsonInclude
-    private String allocatedUserFullName;
-    @Transient
-    @JsonInclude
-    private String allocatedUserPhoneNumber;
+//    @Transient
+//    @JsonInclude
+//    private String jwtToken;
+//    @Transient
+//    @JsonInclude
+//    private String BMCode;
+//    @Transient
+//    @JsonInclude
+//    private String DSACompanyCode;
+//    @Transient
+//    @JsonInclude
+//    private String allocatedUserFullName;
+//    @Transient
+//    @JsonInclude
+//    private String allocatedUserPhoneNumber;
 
 }
