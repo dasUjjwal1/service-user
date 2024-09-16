@@ -1,4 +1,4 @@
-package com.pbyt.finance.entity;
+package com.pbyt.finance.applicationEntity;
 
 import lombok.Data;
 

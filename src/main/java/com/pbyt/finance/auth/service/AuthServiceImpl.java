@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService{
                     .address(registerModel.getAddress())
                     .authorities(role)
                     .password(hashedPassword)
-                    .workingArea(registerModel.getWorkingArea())
+//                    .workingArea(registerModel.getWorkingArea())
                     .dob(registerModel.getDob())
                     .build());
             String token = jwtService.GenerateToken(role+"-"+agent.getId().toString(), agent.getMobileNumber().toString());

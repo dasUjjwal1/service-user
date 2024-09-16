@@ -2,7 +2,7 @@ package com.pbyt.finance.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pbyt.finance.entity.Address;
+import com.pbyt.finance.applicationEntity.Address;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

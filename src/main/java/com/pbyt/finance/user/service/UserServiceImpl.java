@@ -1,7 +1,11 @@
 package com.pbyt.finance.user.service;
 
+import com.pbyt.finance.applicationEntity.TblStateDistrict;
+import com.pbyt.finance.applicationEntity.TblWorkArea;
 import com.pbyt.finance.exception.NotFound;
+import com.pbyt.finance.repository.StateDistrictRepository;
 import com.pbyt.finance.repository.UserRepository;
+import com.pbyt.finance.repository.WorkAreaRepository;
 import com.pbyt.finance.user.entity.TblUser;
 import com.pbyt.finance.user.model.UpdateUserModel;
 import com.pbyt.finance.user.model.UserCreateModel;
@@ -21,7 +25,10 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private WorkAreaRepository workAreaRepository;
 
     @Override
     public void createUser(UserCreateModel userCreateModel) {
@@ -33,11 +40,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     .name(userCreateModel.getName())
                     .email(userCreateModel.getEmail())
                     .mobileNumber(userCreateModel.getMobileNumber())
+
                     .address(userCreateModel.getAddress())
                     .authorities(role)
                     .password(hashedPassword)
-                    .workingArea(userCreateModel.getWorkingArea())
                     .dob(userCreateModel.getDob())
+                    .build());
+            workAreaRepository.save(TblWorkArea.builder()
+
                     .build());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -72,7 +82,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userUpdate.setAuthorities(role);
         userUpdate.setDob(userModel.getDob());
         userUpdate.setName(userModel.getName());
-        userUpdate.setWorkingArea(userModel.getWorkingArea());
+//        userUpdate.setWorkingArea(userModel.getWorkingArea());
         userUpdate.setModifiedOn(LocalDateTime.now());
         userRepository.save(userUpdate);
     }

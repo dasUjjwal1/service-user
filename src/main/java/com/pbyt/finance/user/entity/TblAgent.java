@@ -1,7 +1,7 @@
 package com.pbyt.finance.user.entity;
 
-import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.TblWorkArea;
+import com.pbyt.finance.applicationEntity.Address;
+import com.pbyt.finance.applicationEntity.TblStateDistrict;
 import com.pbyt.finance.global.enums.Gender;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -43,8 +45,6 @@ public class TblAgent {
     @Convert(converter = AuthoritiesConverter.class)
     @Column(name = "authorities", length = 500)
     private Collection<Integer> authorities;
-//    @Column(name = "work_area", length = 500)
-//    private TblWorkArea workingArea;
 
     private String status;
 
@@ -64,13 +64,16 @@ public class TblAgent {
 
     private Integer createdBy;
 
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },mappedBy = "agent")
+    private Set<TblStateDistrict> workArea = HashSet.newHashSet(0);
+
     private Integer updatedBy;
 
     private Long whatsappNumber;
-
-//    private Integer parentAgentId;
-
-//    private Integer vendorId;
 
     private String employeeCode;
 
@@ -88,24 +91,6 @@ public class TblAgent {
 
     private LocalDateTime lastCalled;
 
-//    private Integer categoryId;
-
     private String deviceToken;
-
-//    @Transient
-//    @JsonInclude
-//    private String jwtToken;
-//    @Transient
-//    @JsonInclude
-//    private String BMCode;
-//    @Transient
-//    @JsonInclude
-//    private String DSACompanyCode;
-//    @Transient
-//    @JsonInclude
-//    private String allocatedUserFullName;
-//    @Transient
-//    @JsonInclude
-//    private String allocatedUserPhoneNumber;
 
 }

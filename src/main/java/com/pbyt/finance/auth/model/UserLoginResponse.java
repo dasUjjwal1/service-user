@@ -1,9 +1,11 @@
 package com.pbyt.finance.auth.model;
 
-import com.pbyt.finance.entity.TblWorkArea;
+import com.pbyt.finance.applicationEntity.TblStateDistrict;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -12,6 +14,6 @@ public class UserLoginResponse {
     private String token;
     private String name;
     private Long mobileNumber;
-    private TblWorkArea tblWorkArea;
+    private Set<TblStateDistrict> workArea;
     private Integer id;
 }

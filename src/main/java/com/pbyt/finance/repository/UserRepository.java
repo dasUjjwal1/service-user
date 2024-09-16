@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<TblUser, Integer>  {
 
     @Query("SELECT new com.pbyt.finance.user.model.UserResponseDetails(tu.id, tu.name, tu.mobileNumber, tu.dob," +
             " tu.email, " +
-            "  tu.address, tu.authorities, tu.workingArea, " +
+            "  tu.address, tu.authorities, " +
             "  tu.createdBy, tu.createdOn)" +
             " from TblUser tu WHERE tu.id != 552 AND tu.mobileNumber != 9647012776")
     List<UserResponseDetails> findAllUsers();

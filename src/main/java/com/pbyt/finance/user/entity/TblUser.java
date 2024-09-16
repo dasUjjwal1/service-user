@@ -1,7 +1,8 @@
 package com.pbyt.finance.user.entity;
 
-import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.TblWorkArea;
+import com.pbyt.finance.applicationEntity.Address;
+import com.pbyt.finance.applicationEntity.TblStateDistrict;
+import com.pbyt.finance.applicationEntity.TblWorkArea;
 import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
@@ -43,16 +44,12 @@ public class TblUser implements UserDetails {
     @Column(name = "authorities", length = 500)
     private Collection<Integer> authorities;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            })
-    @JoinTable(name = "user_work",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "work_area_id")})
-    @Column(name = "work_area", length = 500)
-    private Set<TblWorkArea> workingArea = HashSet.newHashSet(0);
+            },mappedBy = "user")
+    private Set<TblWorkArea> workArea = HashSet.newHashSet(0);
     private Integer createdBy;
     @Column(name = "created_on", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;

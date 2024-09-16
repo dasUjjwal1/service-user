@@ -33,6 +33,10 @@ public class ApplicationExceptionHandler implements ErrorController {
     public ResponseEntity<MessageResponse> handleNotFound(NotFound notFound) {
         return createHttpResponse(HttpStatus.BAD_REQUEST, notFound.getMessage());
     }
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<MessageResponse> handleNUmberFormat(NumberFormatException exception) {
+        return createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
     @ExceptionHandler(InvalidCredential.class)
     public ResponseEntity<MessageResponse> invalidCredential(InvalidCredential invalidCredential) {
         return createHttpResponse(HttpStatus.BAD_REQUEST, invalidCredential.getMessage());

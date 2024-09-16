@@ -1,7 +1,6 @@
 package com.pbyt.finance.user.model;
 
-import com.pbyt.finance.entity.Address;
-import com.pbyt.finance.entity.TblWorkArea;
+import com.pbyt.finance.applicationEntity.Address;
 import com.pbyt.finance.enums.RoleEnum;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
@@ -27,7 +26,7 @@ public class UserResponseDetails {
     private Address address;
     @Convert(converter = AuthoritiesConverter.class)
     private Collection<Integer> authorities;
-    private TblWorkArea workingArea;
+//    private Set<TblStateDistrict> workArea;
     private Integer createdBy;
     private LocalDateTime createdOn;
     public Collection<String> getAuthorities() {

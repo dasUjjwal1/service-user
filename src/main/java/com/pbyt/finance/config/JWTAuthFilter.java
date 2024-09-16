@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -66,7 +67,11 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                             request.setAttribute("id",userId);
                         }
                     }
+                }else {
+                    throw new BadRequestException("Bad request");
                 }
+            }else {
+                throw new BadRequestException("Bad request");
             }
 
         } catch (Exception jwtException) {
