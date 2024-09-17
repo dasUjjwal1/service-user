@@ -1,9 +1,7 @@
 package com.pbyt.finance.user.service;
 
-import com.pbyt.finance.applicationEntity.TblStateDistrict;
 import com.pbyt.finance.applicationEntity.TblWorkArea;
 import com.pbyt.finance.exception.NotFound;
-import com.pbyt.finance.repository.StateDistrictRepository;
 import com.pbyt.finance.repository.UserRepository;
 import com.pbyt.finance.repository.WorkAreaRepository;
 import com.pbyt.finance.user.entity.TblUser;
@@ -20,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -36,19 +36,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String hashedPassword = new BCryptPasswordEncoder().encode(userCreateModel.getPassword());
             List<Integer> role = userCreateModel.getAuthorities()
                     .stream().map(Enum::ordinal).toList();
-            userRepository.save(TblUser.builder()
+            TblUser user = userRepository.save(TblUser.builder()
                     .name(userCreateModel.getName())
                     .email(userCreateModel.getEmail())
                     .mobileNumber(userCreateModel.getMobileNumber())
-
                     .address(userCreateModel.getAddress())
                     .authorities(role)
                     .password(hashedPassword)
                     .dob(userCreateModel.getDob())
                     .build());
-            workAreaRepository.save(TblWorkArea.builder()
-
-                    .build());
+            Set<TblWorkArea> workAreaList = userCreateModel.getWorkArea().stream().map(
+                    it -> TblWorkArea
+                            .builder()
+                            .userId(user.getId())
+                            .areaId(it)
+                            .build()).collect(Collectors.toSet());
+            workAreaRepository.saveAll(workAreaList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -82,7 +85,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userUpdate.setAuthorities(role);
         userUpdate.setDob(userModel.getDob());
         userUpdate.setName(userModel.getName());
-//        userUpdate.setWorkingArea(userModel.getWorkingArea());
         userUpdate.setModifiedOn(LocalDateTime.now());
         userRepository.save(userUpdate);
     }

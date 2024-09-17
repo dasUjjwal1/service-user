@@ -1,28 +1,24 @@
 package com.pbyt.finance.applicationEntity;
 
-import com.pbyt.finance.user.entity.TblAgent;
-import com.pbyt.finance.user.entity.TblUser;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TblWorkArea {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user.id")
-    private TblUser user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agent.id")
-    private TblAgent agent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stateDistrict.id")
-    private TblStateDistrict stateDistrict;
+    @Column(name = "user_id")
+    private Integer userId;
+    @Column(name = "agent_id")
+    private Integer agentId;
+    @Column(name = "area_id")
+    private Integer areaId;
 }

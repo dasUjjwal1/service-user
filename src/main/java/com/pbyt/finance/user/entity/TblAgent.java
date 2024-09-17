@@ -1,7 +1,6 @@
 package com.pbyt.finance.user.entity;
 
 import com.pbyt.finance.applicationEntity.Address;
-import com.pbyt.finance.applicationEntity.TblStateDistrict;
 import com.pbyt.finance.global.enums.Gender;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
@@ -14,8 +13,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
@@ -28,13 +25,10 @@ public class TblAgent {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String email;
-
     private String name;
-
     @Column(unique = true)
     private Long mobileNumber;
     private Date dob;
@@ -63,13 +57,6 @@ public class TblAgent {
     private LocalDateTime modifiedOn;
 
     private Integer createdBy;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },mappedBy = "agent")
-    private Set<TblStateDistrict> workArea = HashSet.newHashSet(0);
 
     private Integer updatedBy;
 

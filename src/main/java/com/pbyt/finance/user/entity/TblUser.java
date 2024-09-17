@@ -43,13 +43,6 @@ public class TblUser implements UserDetails {
     @Convert(converter = AuthoritiesConverter.class)
     @Column(name = "authorities", length = 500)
     private Collection<Integer> authorities;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },mappedBy = "user")
-    private Set<TblWorkArea> workArea = HashSet.newHashSet(0);
     private Integer createdBy;
     @Column(name = "created_on", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT NOW()")
     private LocalDateTime createdOn;
@@ -58,7 +51,6 @@ public class TblUser implements UserDetails {
     private LocalDateTime modifiedOn;
     @Column(columnDefinition = "boolean default false")
     private Boolean isSuperAdmin;
-
     @Override
     public String getPassword() {
         return password;
@@ -77,11 +69,9 @@ public class TblUser implements UserDetails {
             return new SimpleGrantedAuthority("ROLE_" + role);
         }).toList();
     }
-
     public Collection<Integer> getRoles() {
         return authorities;
     }
-
     @Override
     public String getUsername() {
         return mobileNumber.toString();
