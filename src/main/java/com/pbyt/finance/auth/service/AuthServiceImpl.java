@@ -16,6 +16,7 @@ import com.pbyt.finance.repository.WorkAreaRepository;
 import com.pbyt.finance.service.JwtService;
 import com.pbyt.finance.user.entity.TblAgent;
 import com.pbyt.finance.user.entity.TblUser;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -52,10 +54,11 @@ public class AuthServiceImpl implements AuthService {
             ObjectMapper mapper = new ObjectMapper();
             String role = mapper.writeValueAsString(user.getRoles());
             String token = jwtService.GenerateToken(role + "-" + user.getId().toString(), user.getMobileNumber().toString());
-            Set<TblStateDistrict> areaList = workAreaRepository.findAreaListByUserId(user.getId());
+            List<Object[]> areaList = userRepository.findAreaListByUserId(user.getId());
             ModelMapper modelMapper = new ModelMapper();
             UserLoginResponse response = modelMapper.map(user, UserLoginResponse.class);
-            response.setWorkArea(areaList);
+            List<TblStateDistrict> areaData = mapper.convertValue(areaList,List.class);
+            response.setWorkArea(areaData);
             response.setToken(token);
             return response;
         } catch (JsonProcessingException e) {

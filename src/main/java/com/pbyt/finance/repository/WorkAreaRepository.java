@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Set;
 
 public interface WorkAreaRepository extends JpaRepository<TblWorkArea,Integer> {
-    @Query(nativeQuery = true, value = "select statedb.\"name\",statedb.id,statedb.parent_id,statedb.sid from (select area_id from public.tbl_work_area wa where wa.user_id = 52 ) as workdb\n" +
-            "left outer join public.tbl_state_district statedb on statedb.id = workdb.area_id")
-    Set<TblStateDistrict> findAreaListByUserId(Integer userId);
+//    @Query(nativeQuery = true, value = "SELECT tbsd.name,tbsd.id,tbsd.parentId," +
+//            "tbsd.sid from TblStateDistrict tbsd RIGHT OUTER JOIN (SELECT wa.areaId from TblWorkArea wa where wa.userId = :userId ) wadb " +
+//            "ON tbsd.id = wadb.areaId")
+//    Set<TblStateDistrict> findAreaListByUserId(Integer userId);
 }

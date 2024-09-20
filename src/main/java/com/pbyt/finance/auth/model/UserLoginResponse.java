@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -14,6 +15,6 @@ public class UserLoginResponse {
     private String token;
     private String name;
     private Long mobileNumber;
-    private Set<TblStateDistrict> workArea;
+    private List<TblStateDistrict> workArea;
     private Integer id;
 }
