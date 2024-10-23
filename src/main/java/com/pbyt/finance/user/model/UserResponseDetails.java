@@ -1,7 +1,8 @@
 package com.pbyt.finance.user.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pbyt.finance.applicationEntity.Address;
-import com.pbyt.finance.applicationEntity.TblWorkArea;
+import com.pbyt.finance.applicationModel.WorkArea;
 import com.pbyt.finance.util.AddressConverter;
 import com.pbyt.finance.util.AuthoritiesConverter;
 import jakarta.persistence.Convert;
@@ -10,9 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Builder
@@ -27,7 +26,8 @@ public class UserResponseDetails {
     private Address address;
     @Convert(converter = AuthoritiesConverter.class)
     private Collection<Integer> authorities;
-//    private Set<TblWorkArea> workArea;
+    @JsonProperty("workArea")
+    private List<WorkArea> workArea;
     private Integer createdBy;
     private LocalDateTime createdOn;
 }
